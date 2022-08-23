@@ -20,6 +20,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
         minLength: 6
+    },
+    admin: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
