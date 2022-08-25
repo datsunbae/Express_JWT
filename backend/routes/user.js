@@ -4,6 +4,6 @@ const userController = require('../controllers/UserController');
 const middleWareController = require('../controllers/MiddlewareController');
 
 router.get('/', middleWareController.verifyToken, userController.getAllUsers);
-router.post('/:id', userController.deleteUser)
+router.post('/:id', middleWareController.verifyTokenAndAdminAuth, userController.deleteUser)
 
 module.exports = router;

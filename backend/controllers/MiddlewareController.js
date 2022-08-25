@@ -11,11 +11,21 @@ const middleWareController = {
                 }
                 req.user = user;
                 next();
-            })
+            });
         }
         else{
-            return res.status(401).json('You\'re not authorized')
+            return res.status(401).json('You\'re not authorized');
         }  
+    },
+    verifyTokenAndAdminAuth(req, res, next) {
+        middleWareController.verifyToken(req, res, () => {
+            if(req.user.id === req.params.id || req.user.admin){
+                next();
+            }
+            else{
+                res.status(403).json('You\'re not allowed to delete other');
+            }
+        })
     }
 }
 

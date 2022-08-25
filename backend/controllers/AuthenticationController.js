@@ -43,7 +43,7 @@ const AuthenticationController = {
                 },
                 process.env.JWT_ACCESS_TOKEN,
                 {
-                    expiresIn: "30s"
+                    expiresIn: "1d"
                 });
                 const {password, ...rest} = user._doc;
                 return res.status(200).json({...rest, accessToken});
