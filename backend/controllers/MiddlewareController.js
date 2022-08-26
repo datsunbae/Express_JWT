@@ -14,7 +14,7 @@ const middleWareController = {
             });
         }
         else{
-            return res.status(401).json('You\'re not authorized');
+            return res.status(401).json('You\'re not authenticated');
         }  
     },
     verifyTokenAndAdminAuth(req, res, next) {
