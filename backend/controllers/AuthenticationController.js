@@ -96,13 +96,18 @@ const AuthenticationController = {
             const newRefreshToken = AuthenticationController.generateRefreshToken(user);
             //Push new refresh token
             refreshTokens.push(newRefreshToken);
-            res.cookie("refreshToken", refreshToken, {
+            res.cookie("refreshToken", newRefreshToken, {
                 httpOnly: true,
                 sameSite: "strict",
                 scure: false
             });
             res.status(200).json({newAccessToken});
         })
+    },
+    logoutUser: async (req,res) => {
+        refreshTokens = refreshTokens.filter(token => token !== req.cookies.refreshToken);
+        res.clearCookie('refreshToken');
+        res.status(200).json('Logout successfully!');
     }
 }
 
