@@ -19,6 +19,6 @@ app.use(cookieParser());
 //Routes
 route(app);
 
-app.listen(3000, () => {
+app.listen(8000, () => {
     console.log('Server is runing...')
 })

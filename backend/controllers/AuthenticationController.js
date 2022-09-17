@@ -53,7 +53,7 @@ const AuthenticationController = {
                 return res.status(200).json({...rest, accessToken});
             }
         }catch(err){
-            res.status(500).json(err);
+            return res.status(500).json(err);
         }
     },
     generateAccessToken: (user) => {
