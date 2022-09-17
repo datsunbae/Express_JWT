@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { loginFailed, loginStart, loginSuccess, registerFailed, registerStart, registerSuccess } from './authSlice';
-import { getUsersStart, getUsersSuccess, getUsersFailed } from './userSlice';
+import { getUsersStart, getUsersSuccess, getUsersFailed, deleteUserStart, deleteUserSuccess, deleteUserFailed } from './userSlice';
 
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
@@ -37,5 +37,21 @@ export const getAllUsers = async (accessToken, dispatch) => {
         dispatch(getUsersSuccess(res.data));
     }catch(err){
         dispatch(getUsersFailed());
+    }
+}
+
+export const deleteUser = async (accessToken, id, dispatch) => {
+    dispatch(deleteUserStart());
+    try{
+        const res = await axios.delete("/user/" + id, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+
+        dispatch(deleteUserSuccess(res.data));
+    }
+    catch(err){
+        dispatch(deleteUserFailed(err.response.data));
     }
 }
