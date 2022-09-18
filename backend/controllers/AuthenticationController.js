@@ -102,7 +102,7 @@ const AuthenticationController = {
                 sameSite: "strict",
                 scure: false
             });
-            res.status(200).json({newAccessToken});
+            return res.status(200).json({newAccessToken});
         })
     },
     logoutUser: async (req,res) => {
