@@ -1,8 +1,7 @@
-import axios from "axios";
-import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { createAxiosJWT } from "../../constants/axiosJWT";
 import { deleteUser, getAllUsers } from "../../redux/apiRequest";
 import { loginSuccess } from "../../redux/authSlice";
 import "./home.css";
@@ -11,48 +10,12 @@ const HomePage = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const userList = useSelector((state) => state.user.users?.allUsers);
   const messageError = useSelector((state) => state.user?.messages);
-  let axiosJWT = axios.create();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  let axiosJWT = createAxiosJWT(user, dispatch, loginSuccess);
   const handleDeleteUser = (id) => {
     deleteUser(user?.accessToken, id, dispatch, axiosJWT);
   };
-
-  const refreshToken = async () => {
-    try {
-      const res = await axios.post("/auth/refreshtoken", {
-        //add cookie
-        withCredentials: true,
-      });
-      console.log("RES DATA: ", res.data)
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  axiosJWT.interceptors.request.use(
-    async (config) => {
-      let date = new Date();
-      const decodeAccessToken = jwt_decode(user?.accessToken);
-      if (decodeAccessToken.exp < date.getTime() / 1000) {
-        console.log('Timeeee')
-        const data = await refreshToken();
-        const refreshUser = {
-          ...user,
-          accessToken: data.newAccessToken,
-        };
-        dispatch(loginSuccess(refreshUser));
-        //Change headers token
-        config.headers["token"] = "Bearer" + data.newAccessToken;
-      }
-      return config;
-    },
-    (err) => {
-      return Promise.reject(err);
-    }
-  );
 
   useEffect(() => {
     if (!user) {
